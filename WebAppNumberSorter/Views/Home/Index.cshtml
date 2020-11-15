@@ -54,22 +54,22 @@
         </div>
     </form>
 
-    <table class="table">
+    <table class="table" style="table-layout: fixed">
         <thead>
             <tr>
-                <th>
+                <th style="width: 10%">
                     @Html.DisplayNameFor(Model => Model.Id)
                 </th>
-                <th>
+                <th style="width: 10%">
                     @Html.DisplayNameFor(Model => Model.UnsortedNumbers)
                 </th>
-                <th>
+                <th style="width: 10%">
                     @Html.DisplayNameFor(Model => Model.SortedNumbers)
                 </th>
-                <th>
+                <th style="width: 10%">
                     @Html.DisplayNameFor(Model => Model.SortType)
                 </th>
-                <th>
+                <th style="width: 10%">
                     @Html.DisplayNameFor(Model => Model.SortTime)
                 </th>
             </tr>
@@ -78,19 +78,19 @@
             @foreach (var sortDetail in Model.SortDetailsList)
             {
             <tr>
-                <td>
+                <td style="word-wrap: break-word">
                     @sortDetail.Id
                 </td>
-                <td>
+                <td style="word-wrap: break-word">
                     @sortDetail.UnsortedNumbers
                 </td>
-                <td>
+                <td style="word-wrap: break-word">
                     @sortDetail.SortedNumbers
                 </td>
-                <td>
+                <td style="word-wrap: break-word">
                     @sortDetail.SortType
                 </td>
-                <td>
+                <td style="word-wrap: break-word">
                     @sortDetail.SortTime
                 </td>
             </tr>
