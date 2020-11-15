@@ -1,0 +1,100 @@
+﻿@model SortApplicationViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Number Sorter</h1>
+    <p>Using commas as delimiters, please enter the integers to be sorted below</p>
+</div>
+
+<div class="container">
+    <form method="post" asp-controller="Home" asp-action="Submit">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="UnsortedNumbers">Unsorted Numbers</label>
+                <input asp-for="UnsortedNumbers" class="form-control">
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="SortType">Sort Type</label>
+                <select asp-for="SortType" class="form-control">
+                    <option selected>Ascending</option>
+                    <option>Descending</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <input type="submit" value="Sort" class="btn btn-primary mb-2" />
+                <label style="color:@Model.SortStatusColour">@Model.SortStatus</label>
+            </div>
+        </div>
+    </form>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Sorted Numbers</label>
+            <input class="form-control" readonly value=@Model.SortedNumbers>
+        </div>
+        <div class="form-group col-md-2">
+            <label>Sort Type</label>
+            <input class="form-control" readonly value=@Model.SortType>
+        </div>
+        <div class="form-group col-md-2">
+            <label>Sort Time (milliseconds)</label>
+            <input class="form-control" readonly value=@Model.SortTime>
+        </div>
+    </div>
+    <br/>
+
+    <form method="post" asp-controller="Home" asp-action="ExportToJson">
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <input type="submit" class="btn btn-primary mb-2" value="Export to JSON" />
+                <label>@Model.ExportStatus</label>
+            </div>
+        </div>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(Model => Model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(Model => Model.UnsortedNumbers)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(Model => Model.SortedNumbers)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(Model => Model.SortType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(Model => Model.SortTime)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var sortDetail in Model.SortDetailsList)
+            {
+            <tr>
+                <td>
+                    @sortDetail.Id
+                </td>
+                <td>
+                    @sortDetail.UnsortedNumbers
+                </td>
+                <td>
+                    @sortDetail.SortedNumbers
+                </td>
+                <td>
+                    @sortDetail.SortType
+                </td>
+                <td>
+                    @sortDetail.SortTime
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
