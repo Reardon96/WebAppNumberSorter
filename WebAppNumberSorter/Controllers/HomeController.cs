@@ -28,13 +28,13 @@ namespace WebAppNumberSorter.Controllers
 
         public IActionResult ExportToJson()
         {
-            List<SortDetails> sortDetails = _sortDetailsRepository.GetAllSortDetails();
-            string jsonSortDetails = JsonSerializer.Serialize(sortDetails);
+            List<SortDetails> sortDetailsHistory = _sortDetailsRepository.GetAllSortDetails();
+            string jsonSortDetails = JsonSerializer.Serialize(sortDetailsHistory);
             string jsonSortDetailsPath = Path.Combine(Directory.GetCurrentDirectory(), "App_Data", "SortDetailsData.json");
 
             System.IO.File.WriteAllText(jsonSortDetailsPath, jsonSortDetails);
 
-            return View("Index", new SortApplicationViewModel() { ExportStatus = "Export Success"});
+            return View("Index", new SortApplicationViewModel() { ExportStatus = "Export Success", SortDetailsList = sortDetailsHistory });
         }
         
 
