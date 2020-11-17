@@ -9,7 +9,6 @@ C:\Users\Callum\source\repos\WebAppNumberSorter\WebAppNumberSorter\bin\Debug\net
 C:\Users\Callum\source\repos\WebAppNumberSorter\WebAppNumberSorter\bin\Debug\netcoreapp3.1\WebAppNumberSorter.pdb
 C:\Users\Callum\source\repos\WebAppNumberSorter\WebAppNumberSorter\bin\Debug\netcoreapp3.1\WebAppNumberSorter.Views.dll
 C:\Users\Callum\source\repos\WebAppNumberSorter\WebAppNumberSorter\bin\Debug\netcoreapp3.1\WebAppNumberSorter.Views.pdb
-C:\Users\Callum\source\repos\WebAppNumberSorter\WebAppNumberSorter\obj\Debug\netcoreapp3.1\WebAppNumberSorter.csprojAssemblyReference.cache
 C:\Users\Callum\source\repos\WebAppNumberSorter\WebAppNumberSorter\obj\Debug\netcoreapp3.1\WebAppNumberSorter.AssemblyInfoInputs.cache
 C:\Users\Callum\source\repos\WebAppNumberSorter\WebAppNumberSorter\obj\Debug\netcoreapp3.1\WebAppNumberSorter.AssemblyInfo.cs
 C:\Users\Callum\source\repos\WebAppNumberSorter\WebAppNumberSorter\obj\Debug\netcoreapp3.1\WebAppNumberSorter.RazorAssemblyInfo.cache
@@ -148,3 +147,4 @@ C:\Users\Callum\source\repos\WebAppNumberSorter\WebAppNumberSorter\obj\Debug\net
 C:\Users\Callum\source\repos\WebAppNumberSorter\WebAppNumberSorter\obj\Debug\netcoreapp3.1\WebAppNumberSorter.csproj.CoreCompileInputs.cache
 C:\Users\Callum\source\repos\WebAppNumberSorter\WebAppNumberSorter\obj\Debug\netcoreapp3.1\WebAppNumberSorter.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Callum\source\repos\WebAppNumberSorter\WebAppNumberSorter\bin\Debug\netcoreapp3.1\App_Data\SortDetailsData.json
+C:\Users\Callum\source\repos\WebAppNumberSorter\WebAppNumberSorter\obj\Debug\netcoreapp3.1\WebAppNumberSorter.csprojAssemblyReference.cache

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAppNumberSorter.Models;
+using WebAppNumberSorter.Repositories;
 
 namespace WebAppNumberSorter.Migrations
 {

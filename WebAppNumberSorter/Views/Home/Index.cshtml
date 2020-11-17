@@ -14,7 +14,8 @@
         <div class="form-row">
             <div class="form-group col-md-8">
                 <label asp-for="UnsortedNumbers">Unsorted Numbers</label>
-                <input asp-for="UnsortedNumbers" class="form-control">
+                <input asp-for="UnsortedNumbers" class="form-control" asp-validation-summary="ModelOnly">
+                <span asp-validation-for="UnsortedNumbers" class="text-danger"></span>
             </div>
             <div class="form-group col-md-4">
                 <label asp-for="SortType">Sort Type</label>
@@ -22,10 +23,11 @@
                     <option selected>Ascending</option>
                     <option>Descending</option>
                 </select>
+                <span asp-validation-for="SortType" class="text-danger"></span>
             </div>
             <div class="form-group col-md-3">
                 <input type="submit" value="Sort" class="btn btn-primary mb-2" />
-                <label style="color:@Model.SortStatusColour">@Model.SortStatus</label>
+                <label style="color:@Model.SortStatusColour; font-weight:bold">@Model.SortStatus</label>
             </div>
         </div>
     </form>
@@ -47,9 +49,10 @@
 
     <form method="post" asp-controller="Home" asp-action="ExportToJson">
         <div class="form-row">
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-12">
                 <input type="submit" class="btn btn-primary mb-2" value="Export to JSON" />
-                <label>@Model.ExportStatus</label>
+                <label style="color:@Model.ExportStatusColour; font-weight:bold">@Model.ExportStatus</label>
+                <label>@Model.ExportPath</label>
             </div>
         </div>
     </form>

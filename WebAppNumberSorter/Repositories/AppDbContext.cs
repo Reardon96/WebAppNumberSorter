@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using WebAppNumberSorter.Models;
 
-namespace WebAppNumberSorter.Models
+namespace WebAppNumberSorter.Repositories
 {
     public class AppDbContext : DbContext
     {

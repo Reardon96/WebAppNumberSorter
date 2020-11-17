@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using WebAppNumberSorter.Models;
+using WebAppNumberSorter.Repositories;
 using System.IO;
 
 namespace WebAppNumberSorter

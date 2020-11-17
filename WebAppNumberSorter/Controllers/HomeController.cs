@@ -5,8 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebAppNumberSorter.Models;
+using WebAppNumberSorter.Repositories;
 using WebAppNumberSorter.ViewModels;
+using WebAppNumberSorter.Models;
 using System.Text.Json;
 using System.IO;
 
@@ -28,25 +29,30 @@ namespace WebAppNumberSorter.Controllers
 
         public IActionResult ExportToJson()
         {
-            List<SortDetails> sortDetailsHistory = _sortDetailsRepository.GetAllSortDetails();
-            string jsonSortDetails = JsonSerializer.Serialize(sortDetailsHistory);
-            string jsonSortDetailsPath = Path.Combine(Directory.GetCurrentDirectory(), "App_Data", "SortDetailsData.json");
+            var sortDetailsHistory = _sortDetailsRepository.GetAllSortDetails();
+            var jsonSortDetails = JsonSerializer.Serialize(sortDetailsHistory);
+            var jsonSortDetailsPath = Path.Combine(Directory.GetCurrentDirectory(), "App_Data", "SortDetailsData.json");
 
             System.IO.File.WriteAllText(jsonSortDetailsPath, jsonSortDetails);
 
-            return View("Index", new SortApplicationViewModel() { ExportStatus = "Export Success", SortDetailsList = sortDetailsHistory });
+            return View("Index", new SortApplicationViewModel() { ExportStatus = "Export Success: ", SortDetailsList = sortDetailsHistory, 
+                ExportPath = jsonSortDetailsPath, ExportStatusColour = "Green" });
         }
         
 
         public IActionResult Index(Guid sortId)
         {
-            List<SortDetails> sortDetailsHistory = _sortDetailsRepository.GetAllSortDetails();
+            var sortDetailsHistory = _sortDetailsRepository.GetAllSortDetails();
             if (sortId != Guid.Empty)
             {
-                SortDetails sortDetails = _sortDetailsRepository.GetSortDetailsBySortId(sortId);
+                var sortDetails = _sortDetailsRepository.GetSortDetailsBySortId(sortId);
+                if(sortDetails is null)
+                {
+                    return SortFailure();
+                }
 
-                SortApplicationViewModel viewModel = new SortApplicationViewModel() { SortedNumbers = sortDetails.SortedNumbers, SortTime = sortDetails.SortTime.ToString(), 
-                    SortType = sortDetails.SortType, SortStatus = "Sort Success", SortStatusColour = "Black", SortDetailsList = sortDetailsHistory };
+                var viewModel = new SortApplicationViewModel() { UnsortedNumbers = sortDetails.UnsortedNumbers, SortedNumbers = sortDetails.SortedNumbers, SortTime = sortDetails.SortTime.ToString(), 
+                    SortType = sortDetails.SortType, SortStatus = "Sort Success", SortStatusColour = "Green", SortDetailsList = sortDetailsHistory };
 
                 return View(viewModel);
             }
@@ -59,66 +65,66 @@ namespace WebAppNumberSorter.Controllers
         [HttpPost]
         public RedirectToActionResult Submit(SortApplicationViewModel inputNumbers)
         {
-            try
+            if (ModelState.IsValid)
             {
-                Guid sortId = Sort(inputNumbers);
-                return RedirectToAction("Index", new { sortId = sortId });
+                try
+                {
+                    var sortId = ProcessSort(inputNumbers);
+                    return RedirectToAction("Index", new { sortId = sortId });
+                }
+                catch
+                {
+                    return RedirectToAction("SortFailure");
+                }
             }
-            catch
-            {
-                return RedirectToAction("SortFailure");
-            }
+            else return RedirectToAction("ModelNotValid", inputNumbers);
+        }
+
+        public IActionResult ModelNotValid(SortApplicationViewModel invalidModel)
+        {
+            var sortDetailsHistory = _sortDetailsRepository.GetAllSortDetails();
+            invalidModel.SortDetailsList = sortDetailsHistory;
+            return View("Index", invalidModel);
         }
 
         public IActionResult SortFailure()
         {
-            List<SortDetails> sortDetailsHistory = _sortDetailsRepository.GetAllSortDetails();
+            var sortDetailsHistory = _sortDetailsRepository.GetAllSortDetails();
             return View("Index", new SortApplicationViewModel() { SortStatus = "Sort Failure", SortStatusColour = "Red", SortDetailsList = sortDetailsHistory });
         }
 
-        public Guid Sort(SortApplicationViewModel inputNumbers)
+        public List<int> SortIntegers(List<int> integerList, string sortType)
         {
-            List<int> unsortedNumbersList = inputNumbers.UnsortedNumbers.Split(',').Select(Int32.Parse).ToList();
-            List<int> sortedNumbersList = new List<int>();
-
-            var watch = new System.Diagnostics.Stopwatch();
-            if (inputNumbers.SortType == "Ascending")
+            if (sortType == "Ascending")
             {
-                watch.Start();
-                sortedNumbersList = unsortedNumbersList.OrderBy(i => i).ToList();
-                watch.Stop();
+                return integerList.OrderBy(i => i).ToList();
             }
             else
             {
-                watch.Start();
-                sortedNumbersList = unsortedNumbersList.OrderByDescending(i => i).ToList();
-                watch.Stop();
+                return integerList.OrderByDescending(i => i).ToList();
             }
-            long sortDuration = watch.ElapsedMilliseconds;
-            Guid sortId = Guid.NewGuid();
+        }
+
+        public Guid ProcessSort(SortApplicationViewModel inputNumbers)
+        {
+            var unsortedNumbersList = inputNumbers.UnsortedNumbers.Split(',').Select(Int32.Parse).ToList();
+            
+            var watch = new System.Diagnostics.Stopwatch();
+            watch.Start();
+            var sortedNumbersList = SortIntegers(unsortedNumbersList, inputNumbers.SortType);
+            watch.Stop();
+            var sortDuration = watch.ElapsedMilliseconds;
+            var sortId = Guid.NewGuid();
 
             _sortDetailsRepository.Insert(new SortDetails
             {
                 SortId = sortId,
-                UnsortedNumbers = NumberListToString(unsortedNumbersList),
-                SortedNumbers = NumberListToString(sortedNumbersList),
+                UnsortedNumbers = string.Join(",", unsortedNumbersList),
+                SortedNumbers = string.Join(",", sortedNumbersList),
                 SortType = inputNumbers.SortType,
                 SortTime = sortDuration
             });
-
             return sortId;
-        }
-
-        public string NumberListToString(List<int> numberList)
-        {
-            string numberString = "";
-            foreach (int number in numberList)
-            {
-                numberString = numberString + number.ToString() + ",";
-            }
-            numberString = numberString.Remove(numberString.Length - 1);
-
-            return numberString;
         }
     }
 }
